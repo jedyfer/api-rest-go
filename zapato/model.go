@@ -18,8 +18,9 @@ type Model struct {
 type Storage map[string]*Model
 
 // MÉTODOS
-func (s Storage) Create(m *Model) {
-	s[m.Marca] = m //	Marca: key | m: valores
+func (s Storage) Create(m *Model) *Model {
+	s[m.Marca] = m    //	Marca: key | m: valores
+	return s[m.Marca] //	devuelve el registro creado
 }
 
 func (s Storage) GetAll() Storage { //	devuelve el mapa
