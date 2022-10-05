@@ -1,0 +1,16 @@
+##  iniciar go
+go mod init api-go
+go build    //  importante el build para que algunas funciones no esten undefined
+
+##  iniciar servidor
+./api-go.exe
+go run main.go
+
+##  modulo echo
+go get github.com/labstack/echo/v4
+
+
+
+$$  Probar en postman
+Headers > Content-Type: application:json
+Body > raw > { "marca": "Converse", "precio": 1800, "color": "negro" }
