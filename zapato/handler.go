@@ -14,8 +14,8 @@ func Create(c echo.Context) error {
 	if err != nil {
 		r := respuesta.Model{
 			MensajeError: respuesta.MensajeError{
-				"E102", //	codigo de la empresa
-				"El objeto zapato está mal enviado",
+				Codigo:    "E102", //	codigo de la empresa
+				Contenido: "El objeto zapato está mal enviado",
 			},
 		}
 
@@ -26,8 +26,8 @@ func Create(c echo.Context) error {
 
 	r := respuesta.Model{
 		MensajeOK: respuesta.MensajeOK{
-			"A001",
-			"Zapato creado crrectamente",
+			Codigo:    "A001",
+			Contenido: "Zapato creado crrectamente",
 		},
 		Data: d,
 	}
