@@ -1,6 +1,10 @@
 package usuario
 
-import jwt "github.com/dgrijalva/jwt-go"
+import (
+	"fmt"
+
+	jwt "github.com/dgrijalva/jwt-go"
+)
 
 var storage Storage
 
@@ -74,6 +78,23 @@ func (s Storage) Login(e, p string) *Model {
 	}
 
 	return nil
+}
+
+// CON PARAMETROS de paginacion
+func (s Storage) GetAllPaginate(l, p int) []*Model {
+	us := make([]*Model, 0, len(s))
+
+	for _, v := range s {
+		us = append(us, v)
+		fmt.Println(v)
+	}
+
+	fmt.Println(us)
+
+	offset := l*p - l
+	r := us[offset : l*p]
+
+	return r
 }
 
 type Claim struct {

@@ -4,6 +4,7 @@ import (
 	"api-go/respuesta"
 	"errors"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -99,12 +100,35 @@ func GetByEmail(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, r)
 	}
 
+	rsrc := strings.Split(c.Request().RequestURI, email)[0]
+	rsrc = rsrc[:len(rsrc)-1]
+
+	n1 := respuesta.Navegacion{
+		Descripcion: "Self",
+		Link:        c.Request().RequestURI,
+	}
+
+	n2 := respuesta.Navegacion{
+		Descripcion: "Resource",
+		Link:        rsrc,
+	}
+
+	ns := make([]respuesta.Navegacion, 0)
+	ns = append(ns, n1)
+	ns = append(ns, n2)
+
 	r := respuesta.Model{
 		MensajeOK: respuesta.MensajeOK{
 			Codigo:    "U204",
 			Contenido: "Consultado correctamente",
 		},
-		Data: u,
+		Data: struct {
+			Data       interface{}            `json:"data"`
+			Navegacion []respuesta.Navegacion `json:"navegacion"`
+		}{
+			u,
+			ns,
+		},
 	}
 
 	return c.JSON(http.StatusOK, r)
@@ -176,6 +200,36 @@ func Login(c echo.Context) error {
 			Contenido: "Logeado",
 		},
 		Data: l,
+	}
+
+	return c.JSON(http.StatusOK, r)
+}
+
+// USANDO PARAMETROS
+func GetAllPaginate(c echo.Context) error {
+	l := c.QueryParam("limit")
+	p := c.QueryParam("page")
+
+	limit, err := strconv.Atoi(l)
+
+	if err != nil {
+		limit = 1
+	}
+
+	page, err := strconv.Atoi(p)
+
+	if err != nil {
+		page = 1
+	}
+
+	us := storage.GetAllPaginate(limit, page)
+
+	r := respuesta.Model{
+		MensajeOK: respuesta.MensajeOK{
+			Codigo:    "U205",
+			Contenido: "Consultado correctamente",
+		},
+		Data: us,
 	}
 
 	return c.JSON(http.StatusOK, r)
