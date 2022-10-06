@@ -8,6 +8,6 @@ import (
 )
 
 func startRoutes(e *echo.Echo) {
-	e.POST("/zapatos", zapato.Create)
+	e.POST("/zapatos", zapato.Create, usuario.ValidateJWT)
 	e.POST("/login", usuario.Login)
 }
