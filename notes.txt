@@ -14,3 +14,11 @@ go get github.com/labstack/echo/v4
 $$  Probar en postman
 Headers > Content-Type: application:json
 Body > raw > { "marca": "Converse", "precio": 1800, "color": "negro" }
+
+
+$$  Para los certificados
+Instalar el openssl: 
+yo lo encontré aqui https://slproweb.com/products/Win32OpenSSL.html
+
+openssl genrsa -out app.rsa 1024                    //  private key
+openssl rsa -in app.rsa -pubout > app.rsa.pub       //  public key
