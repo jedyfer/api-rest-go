@@ -113,6 +113,7 @@ func GetByEmail(c echo.Context) error {
 		Link:        rsrc,
 	}
 
+	//	HATEAOS
 	ns := make([]respuesta.Navegacion, 0)
 	ns = append(ns, n1)
 	ns = append(ns, n2)
@@ -122,9 +123,10 @@ func GetByEmail(c echo.Context) error {
 			Codigo:    "U204",
 			Contenido: "Consultado correctamente",
 		},
+		//	HATEAOS
 		Data: struct {
-			Data       interface{}            `json:"data"`
-			Navegacion []respuesta.Navegacion `json:"navegacion"`
+			Data       interface{}            `json:"data"`       //	muestra el resultado de la busqueda
+			Navegacion []respuesta.Navegacion `json:"navegacion"` //	indica info del recurso y links que ayudan a encontrar todos los recursos de usuarios
 		}{
 			u,
 			ns,
