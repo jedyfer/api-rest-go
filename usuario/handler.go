@@ -9,6 +9,121 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Crear usuario
+func Create(c echo.Context) error {
+	u := &Model{}
+	err := c.Bind(u)
+
+	if err != nil {
+		r := respuesta.Model{
+			MensajeError: respuesta.MensajeError{
+				Codigo:    "U001",
+				Contenido: "El objeto usuario no tiene la estructura correcta",
+			},
+		}
+
+		return c.JSON(http.StatusBadRequest, r)
+	}
+
+	d := storage.Create(u)
+
+	r := respuesta.Model{
+		MensajeOK: respuesta.MensajeOK{
+			Codigo:    "U200",
+			Contenido: "Usuario creado correctamente",
+		},
+		Data: d,
+	}
+
+	return c.JSON(http.StatusCreated, r)
+}
+
+func Update(c echo.Context) error {
+	u := &Model{}
+	email := c.Param("email")
+
+	err := c.Bind(u)
+
+	if err != nil {
+		r := respuesta.Model{
+			MensajeError: respuesta.MensajeError{
+				Codigo:    "U001",
+				Contenido: "El objeto usuario no tiene la estructura correcta",
+			},
+		}
+
+		return c.JSON(http.StatusBadRequest, r)
+	}
+
+	d := storage.Update(email, u)
+
+	r := respuesta.Model{
+		MensajeOK: respuesta.MensajeOK{
+			Codigo:    "U201",
+			Contenido: "Usuario actualizado correctamente",
+		},
+		Data: d,
+	}
+
+	return c.JSON(http.StatusOK, r)
+}
+
+func Delete(c echo.Context) error {
+	email := c.Param("email")
+
+	storage.Delete(email)
+
+	r := respuesta.Model{
+		MensajeOK: respuesta.MensajeOK{
+			Codigo:    "U202",
+			Contenido: "Usuario eliminado correctamente",
+		},
+	}
+
+	return c.JSON(http.StatusOK, r)
+}
+
+func GetByEmail(c echo.Context) error {
+	email := c.Param("email")
+
+	u := storage.GetByEmail(email)
+
+	if u == nil {
+		r := respuesta.Model{
+			MensajeError: respuesta.MensajeError{
+				Codigo:    "U003",
+				Contenido: "El email no se encuentra",
+			},
+		}
+
+		return c.JSON(http.StatusNotFound, r)
+	}
+
+	r := respuesta.Model{
+		MensajeOK: respuesta.MensajeOK{
+			Codigo:    "U204",
+			Contenido: "Consultado correctamente",
+		},
+		Data: u,
+	}
+
+	return c.JSON(http.StatusOK, r)
+}
+
+func GetAll(c echo.Context) error {
+	us := storage.GetAll()
+
+	r := respuesta.Model{
+		MensajeOK: respuesta.MensajeOK{
+			Codigo:    "U205",
+			Contenido: "Consultado correctamente",
+		},
+		Data: us,
+	}
+
+	return c.JSON(http.StatusOK, r)
+}
+
 func Login(c echo.Context) error {
 	u := &Model{}
 

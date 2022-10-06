@@ -49,8 +49,17 @@ func (s Storage) GetByMarca(e string) *Model { //	devuelve el modelo
 	return nil
 }
 
-func (s Storage) Update(e string, z *Model) { //	update by email
+func (s Storage) GetByEmail(e string) *Model {
+	if v, ok := s[e]; ok {
+		return v
+	}
+
+	return nil
+}
+
+func (s Storage) Update(e string, z *Model) *Model { //	update by email
 	s[e] = z //	modifica por el key
+	return s[e]
 }
 
 func (s Storage) Delete(e string) { //	delete by email
